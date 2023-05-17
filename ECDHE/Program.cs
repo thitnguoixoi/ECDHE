@@ -33,15 +33,14 @@ class Server
             using (NetworkStream stream = client.GetStream())
             {
                 stream.Write(publicKey, 0, publicKey.Length);
-
+                Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}");
                 byte[] clientPublicKey = new byte[ecDh.PublicKey.ToByteArray().Length];
                 stream.Read(clientPublicKey, 0, clientPublicKey.Length);
-
+                Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}");
                 byte[] sharedSecret = ecDh.DeriveKeyMaterial(CngKey.Import(clientPublicKey, CngKeyBlobFormat.EccPublicBlob));
-
                 Console.WriteLine($"Shared key with client {((IPEndPoint)client.Client.RemoteEndPoint).Address}: {BitConverter.ToString(sharedSecret).Replace("-", "")}");
-            }
 
+            }
             client.Close();
             Console.WriteLine($"Connection with client {((IPEndPoint)client.Client.RemoteEndPoint).Address} closed.");
         }

@@ -20,15 +20,14 @@ class Client
         {
             byte[] publicKey = new byte[1024];
             int bytesRead = stream.Read(publicKey, 0, publicKey.Length);
-
+            Console.WriteLine($"Server public key: {BitConverter.ToString(publicKey, 0, bytesRead).Replace("-", "")}");
             ECDiffieHellmanCng ecDh = new ECDiffieHellmanCng();
             ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
             ecDh.HashAlgorithm = CngAlgorithm.Sha256;
             byte[] clientPublicKey = ecDh.PublicKey.ToByteArray();
             stream.Write(clientPublicKey, 0, clientPublicKey.Length);
-
+            Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}");
             byte[] sharedSecret = ecDh.DeriveKeyMaterial(CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob));
-
             Console.WriteLine($"Shared key with server: {BitConverter.ToString(sharedSecret).Replace("-", "")}");
         }
 

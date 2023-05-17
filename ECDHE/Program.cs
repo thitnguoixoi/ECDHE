@@ -20,7 +20,7 @@ class Server
 
     public void Start()
     {
-        listener = new TcpListener(IPAddress.Any, 1234);
+        listener = new TcpListener(IPAddress.Any, 8888);
         listener.Start();
 
         Console.WriteLine("Server started. Waiting for connections...");

@@ -14,7 +14,7 @@ class Client
 
     public void Connect(string ipAddress)
     {
-        TcpClient client = new TcpClient(ipAddress, 1234);
+        TcpClient client = new TcpClient(ipAddress, 8888);
 
         using (NetworkStream stream = client.GetStream())
         {
@@ -40,7 +40,10 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.Write("Enter IP address: ");
+        string ipAddress = Console.ReadLine();
+
         Client client = new Client();
-        client.Connect("127.0.0.1");
+        client.Connect(ipAddress);
     }
 }

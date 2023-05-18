@@ -16,6 +16,7 @@ class Server
         ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
         ecDh.HashAlgorithm = CngAlgorithm.Sha256;
         publicKey = ecDh.PublicKey.ToByteArray();
+        Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}");
     }
 
     public void Start()
@@ -33,7 +34,6 @@ class Server
             using (NetworkStream stream = client.GetStream())
             {
                 stream.Write(publicKey, 0, publicKey.Length);
-                Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}");
                 byte[] clientPublicKey = new byte[ecDh.PublicKey.ToByteArray().Length];
                 stream.Read(clientPublicKey, 0, clientPublicKey.Length);
                 Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}");

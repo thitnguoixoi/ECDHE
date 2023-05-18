@@ -12,7 +12,7 @@ class Server
 
     public Server()
     {
-        ecDh = new ECDiffieHellmanCng();
+        ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP384);
         ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
         ecDh.HashAlgorithm = CngAlgorithm.Sha256;
         publicKey = ecDh.PublicKey.ToByteArray();
@@ -20,7 +20,7 @@ class Server
 
     public void Start()
     {
-        listener = new TcpListener(IPAddress.Any, 8888);
+        listener = new TcpListener(IPAddress.Any, 8888);  //sử dụng port 8888 để kết nối
         listener.Start();
 
         Console.WriteLine("Server started. Waiting for connections...");

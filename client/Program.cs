@@ -23,7 +23,7 @@ class Client
             int bytesRead = stream.Read(publicKey, 0, publicKey.Length);
             Console.WriteLine($"Server public key: {BitConverter.ToString(publicKey, 0, bytesRead).Replace("-", "")}\n");
             // Sử dụng curve384
-            ECDiffieHellmanCng ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP384);  
+            ECDiffieHellmanCng ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP256);  
             ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
             ecDh.HashAlgorithm = CngAlgorithm.Sha256;
 /*            byte[] privateKey = ecDh.Key.Export(CngKeyBlobFormat.EccPrivateBlob);

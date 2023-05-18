@@ -12,13 +12,13 @@ class Server
 
     public Server()
     {
-        ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP384);
+        ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP256);
         ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
         ecDh.HashAlgorithm = CngAlgorithm.Sha256;
         publicKey = ecDh.PublicKey.ToByteArray();
         Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}\n");
- /*       byte[] privateKey = ecDh.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
-        Console.WriteLine("Private key: " + BitConverter.ToString(privateKey).Replace("-", "") + "\n");*/
+        byte[] privateKey = ecDh.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
+        Console.WriteLine("Private key: " + BitConverter.ToString(privateKey).Replace("-", "") + "\n");
     }
 
     public void Start()

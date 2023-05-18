@@ -16,7 +16,9 @@ class Server
         ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
         ecDh.HashAlgorithm = CngAlgorithm.Sha256;
         publicKey = ecDh.PublicKey.ToByteArray();
-        Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}");
+        Console.WriteLine($"server public key: {BitConverter.ToString(publicKey).Replace("-", "")}\n");
+ /*       byte[] privateKey = ecDh.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
+        Console.WriteLine("Private key: " + BitConverter.ToString(privateKey).Replace("-", "") + "\n");*/
     }
 
     public void Start()
@@ -36,9 +38,9 @@ class Server
                 stream.Write(publicKey, 0, publicKey.Length);
                 byte[] clientPublicKey = new byte[ecDh.PublicKey.ToByteArray().Length];
                 stream.Read(clientPublicKey, 0, clientPublicKey.Length);
-                Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}");
+                Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}\n");
                 byte[] sharedSecret = ecDh.DeriveKeyMaterial(CngKey.Import(clientPublicKey, CngKeyBlobFormat.EccPublicBlob));
-                Console.WriteLine($"Shared key with client {((IPEndPoint)client.Client.RemoteEndPoint).Address}: {BitConverter.ToString(sharedSecret).Replace("-", "")}");
+                Console.WriteLine($"Shared key with client {((IPEndPoint)client.Client.RemoteEndPoint).Address}: {BitConverter.ToString(sharedSecret).Replace("-", "")}\n");
 
             }
             client.Close();

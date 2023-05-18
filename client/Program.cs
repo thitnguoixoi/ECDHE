@@ -21,18 +21,20 @@ class Client
             // Nhận và in public key ra màn hình
             byte[] publicKey = new byte[1024];
             int bytesRead = stream.Read(publicKey, 0, publicKey.Length);
-            Console.WriteLine($"Server public key: {BitConverter.ToString(publicKey, 0, bytesRead).Replace("-", "")}");
+            Console.WriteLine($"Server public key: {BitConverter.ToString(publicKey, 0, bytesRead).Replace("-", "")}\n");
             // Sử dụng curve384
             ECDiffieHellmanCng ecDh = new ECDiffieHellmanCng(ECCurve.NamedCurves.nistP384);  
             ecDh.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
             ecDh.HashAlgorithm = CngAlgorithm.Sha256;
+/*            byte[] privateKey = ecDh.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
+            Console.WriteLine("Private key: " + BitConverter.ToString(privateKey).Replace("-", "") + "\n");*/
             // Public key của Client
             byte[] clientPublicKey = ecDh.PublicKey.ToByteArray();
             stream.Write(clientPublicKey, 0, clientPublicKey.Length);
-            Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}");
+            Console.WriteLine($"client public key: {BitConverter.ToString(clientPublicKey).Replace("-", "")}\n");
             // Private key 
             byte[] sharedSecret = ecDh.DeriveKeyMaterial(CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob));
-            Console.WriteLine($"Shared key with server: {BitConverter.ToString(sharedSecret).Replace("-", "")}");
+            Console.WriteLine($"Shared key with server: {BitConverter.ToString(sharedSecret).Replace("-", "")}\n");
         }
 
         client.Close();
